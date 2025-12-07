@@ -204,3 +204,135 @@ Address (160 bits / 20 bytes)
 - [eth-account Documentation](https://eth-account.readthedocs.io/)
 
 ----------------------------------------------------------------
+
+----------------------------------------------------------------
+
+## Week 4: ERC-20 Token Interaction
+
+### What I Learned
+- **ABIs (Application Binary Interface)**: The contract's "instruction manual" that defines functions, parameters, and return types
+- **Function Selectors**: First 4 bytes of `keccak256(functionSignature)` used to identify contract functions
+- **Contract Instances**: Python objects representing smart contracts with their address and ABI
+- **Token Decimals**: ERC-20 balances are stored as integers; decimals define the conversion (e.g., USDC=6, DAI=18)
+- **Read-Only Functions**: `view`/`constant` functions don't modify state and don't cost gas
+- **Return Value Decoding**: How web3.py automatically decodes contract responses based on ABI
+- **ERC-20 Standard**: All compliant tokens share the same interface (name, symbol, decimals, balanceOf, totalSupply)
+
+### Scripts Created
+
+#### explore_abi.py
+Explains ABI structure and demonstrates function selectors.
+
+**Usage:**
+```bash
+python3 scripts/week4/explore_abi.py
+```
+
+#### connect_to_token.py
+Connects to popular ERC-20 tokens and fetches basic metadata.
+
+**Usage:**
+```bash
+python3 scripts/week4/connect_to_token.py
+```
+
+#### check_balance.py
+Checks ERC-20 token balances for Ethereum addresses.
+
+**Usage:**
+```bash
+python3 scripts/week4/check_balance.py [ADDRESS]
+```
+
+#### token_metadata.py
+Fetches comprehensive metadata for popular ERC-20 tokens.
+
+**Usage:**
+```bash
+python3 scripts/week4/token_metadata.py
+```
+
+#### erc20_balance_checker.py (Week 4 Deliverable)
+Comprehensive ERC-20 balance checker that works with any token address.
+
+**Features:**
+- Works with any ERC-20 token (by address or popular token name)
+- Fetches complete token metadata (name, symbol, decimals, total supply)
+- Checks balances for one or multiple addresses
+- User-friendly output with proper formatting
+- Error handling and address validation
+- Supports token name shortcuts (USDC, DAI, WETH, UNI, LINK)
+
+**Usage:**
+```bash
+# With examples
+python3 scripts/erc20_balance_checker.py --examples
+
+# Check USDC balance
+python3 scripts/erc20_balance_checker.py USDC 0xYOUR_ADDRESS
+
+# Check multiple balances
+python3 scripts/erc20_balance_checker.py DAI 0xADDRESS1 0xADDRESS2
+
+# Use full token address
+python3 scripts/erc20_balance_checker.py 0xTOKEN_ADDRESS 0xWALLET_ADDRESS
+```
+
+### Key Concepts
+
+**ABI Structure**:
+```json
+{
+  "name": "balanceOf",
+  "type": "function",
+  "inputs": [{"name": "_owner", "type": "address"}],
+  "outputs": [{"name": "balance", "type": "uint256"}],
+  "constant": true
+}
+```
+
+**Function Selector Calculation**:
+- `balanceOf(address)` → `keccak256("balanceOf(address)")[:4]` → `0x70a08231`
+- Used to identify which function to call in the contract
+- First 4 bytes of the function signature hash
+
+**Creating Contract Instances**:
+```python
+contract = w3.eth.contract(address=TOKEN_ADDRESS, abi=ERC20_ABI)
+balance = contract.functions.balanceOf(address).call()
+```
+
+**Token Decimal Conversion**:
+```python
+raw_balance = 1000000  # From contract
+decimals = 6  # USDC has 6 decimals
+actual_balance = raw_balance / (10 ** decimals)  # 1.0 USDC
+```
+
+**ERC-20 Standard Functions**:
+- `name()` → Returns token name (e.g., "USD Coin")
+- `symbol()` → Returns token symbol (e.g., "USDC")
+- `decimals()` → Returns decimal places (e.g., 6)
+- `totalSupply()` → Returns total token supply
+- `balanceOf(address)` → Returns balance for an address
+
+**Popular ERC-20 Tokens**:
+- **USDC** (USD Coin): 6 decimals, stablecoin backed by Circle
+- **DAI**: 18 decimals, decentralized stablecoin by MakerDAO
+- **WETH** (Wrapped Ether): 18 decimals, ERC-20 wrapper for ETH
+- **UNI** (Uniswap): 18 decimals, DEX governance token
+- **LINK** (Chainlink): 18 decimals, oracle network token
+
+**Read vs Write Operations**:
+- **Read (call)**: Free, returns data, doesn't change state
+  - Example: `balanceOf()`, `totalSupply()`
+- **Write (transaction)**: Costs gas, changes state, requires signing
+  - Example: `transfer()`, `approve()` (covered in Week 5)
+
+### Resources Used
+- [ERC-20 Token Standard](https://eips.ethereum.org/EIPS/eip-20)
+- [web3.py Contract Documentation](https://web3py.readthedocs.io/en/stable/contracts.html)
+- [Ethereum ABI Specification](https://docs.soliditylang.org/en/latest/abi-spec.html)
+- [Etherscan Token Tracker](https://etherscan.io/tokens)
+
+----------------------------------------------------------------
