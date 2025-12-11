@@ -336,3 +336,57 @@ actual_balance = raw_balance / (10 ** decimals)  # 1.0 USDC
 - [Etherscan Token Tracker](https://etherscan.io/tokens)
 
 ----------------------------------------------------------------
+
+## Week 5: Transaction History & Events
+
+### What I Learned
+- **Event Logs**: How Ethereum logs work and their structure
+- **Topics vs Data**: Indexed parameters in topics, non-indexed in data
+- **Transfer Event**: Standard ERC-20 Transfer(address,address,uint256) event
+- **Event Filtering**: Using eth_getLogs with topic filters
+- **Pagination**: Handling RPC limits by fetching in chunks
+- **Block Ranges**: Managing large historical queries
+- **Transaction Receipts**: Extracting gas costs and event logs
+
+### Scripts Created
+
+#### explore_events.py - understanding event logs & topics
+#### fetch_transaction_history.py - fetch events
+#### parse_receipts.py - understanding transaction receipts
+#### filter_transfer_events.py - filter logs event signature
+#### paginated_event_fetcher.py - RCP block range limits, pagination, rate limiting
+#### token_transfer_history.py - fetch all transfer events and generate CSV with number of information
+
+### Key Concepts
+
+**Transfer Event Structure**:
+```
+Event: Transfer(address indexed from, address indexed to, uint256 value)
+Signature: 0xddf252ad...
+Topic[0]: Event signature
+Topic[1]: from address (indexed)
+Topic[2]: to address (indexed)
+Data: amount (non-indexed)
+```
+
+[Continue with other key concepts...]
+```
+
+---
+
+## **Key Concepts Summary**
+
+### Event Logs
+Events are stored in the blockchain's transaction receipts as logs. Each log contains:
+- **address**: The contract that emitted the event
+- **topics**: Array of indexed parameters (max 4, first is event signature)
+- **data**: Non-indexed parameters (ABI encoded)
+
+### Topics Explained
+```
+topics[0] = keccak256("Transfer(address,address,uint256)")
+topics[1] = from address (32 bytes, padded)
+topics[2] = to address (32 bytes, padded)
+data = amount (32 bytes, uint256)
+
+
