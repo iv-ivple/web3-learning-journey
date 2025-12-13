@@ -389,4 +389,45 @@ topics[1] = from address (32 bytes, padded)
 topics[2] = to address (32 bytes, padded)
 data = amount (32 bytes, uint256)
 
+-------------------------------------------------------------------
+
+-------------------------------------------------------------------
+
+## Week 6: Database Fundamentals
+
+### What I Learned
+- **SQL Basics**: CREATE, INSERT, SELECT, UPDATE, DELETE operations
+- **Schema Design**: Proper table structure, relationships, and foreign keys
+- **Indexes**: Improving query performance with strategic indexing
+- **SQLAlchemy ORM**: Object-relational mapping for Pythonic database access
+- **Normalization**: Organizing data to reduce redundancy
+- **SQL Injection Prevention**: Using parameterized queries and ORM
+- **Database Integration**: Storing blockchain data for efficient querying
+
+### Scripts Created
+
+#### Database Setup & Schema
+- `create_schema.py` - Creates database schema with proper structure
+- `models.py` - SQLAlchemy ORM models for all tables
+- `db_helper.py` - Helper functions for common database operations
+
+#### Data Integration
+- `store_transfers.py` - Fetches blockchain events and stores in database
+- `query_transfers.py` - Query and analyze stored transfer data
+
+#### Week 6 Deliverable
+- `setup_database.py` - Complete database setup script with sample data
+
+### Key Concepts
+
+**Database Schema Design**:
+```
+wallets → tracks wallet addresses
+tokens → stores ERC-20 token metadata
+transfers → records all transfer events (FK to tokens)
+blocks → caches block information
+
+-------------------------------------------------------------------
+
+-------------------------------------------------------------------
 
