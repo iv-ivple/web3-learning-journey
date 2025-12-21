@@ -429,5 +429,47 @@ blocks → caches block information
 
 -------------------------------------------------------------------
 
--------------------------------------------------------------------
+
+## Week 7: Testing Basics
+
+### What I Learned
+- **pytest Framework**: Writing unit and integration tests
+- **Mocking**: Using unittest.mock to simulate RPC calls
+- **Test Coverage**: Measuring and improving code coverage
+- **Fixtures**: Reusable test data and setup
+- **Parametrization**: Testing multiple inputs efficiently
+- **CI/CD**: Automated testing with GitHub Actions
+
+### Test Suite
+- 50+ unit tests covering Weeks 2-6
+- Achieved 75% code coverage
+- Mocked all external dependencies
+- Automated testing pipeline
+
+### Key Concepts
+
+**Test-Driven Development (TDD)**:
+Write tests first → Write code → Refactor
+
+**Mocking External Dependencies**:
+```python
+@patch('web3.Web3.HTTPProvider')
+def test_with_mock(mock_provider):
+    # Test without real RPC calls
+```
+
+**Fixtures for Reusability**:
+```python
+@pytest.fixture
+def sample_data():
+    return {"key": "value"}
+```
+
+**Coverage Analysis**:
+- Green (80-100%): Well tested
+- Yellow (50-80%): Needs improvement
+- Red (0-50%): Urgent attention needed
+
+--------------------------------------------------------
+
 
